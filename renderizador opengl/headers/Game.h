@@ -12,8 +12,8 @@
 
 enum GameStates{
     Start,
-    Wild_Battle,
-    Trainer_Battle
+    Estado_Um,
+    Estado_Dois
 };
 
 
@@ -24,9 +24,9 @@ private:
     GLFWwindow* janela;
     GameStates state = Start;
     Shader *Main_shader;
-    State         *estadoVazio          ;//= State();
-    WildBattle    *estadoWildBatalha    ;//= WildBattle();
-    TrainerBattle *estadoTrainerBatalha ;//= TrainerBattle();
+    State         *estadoVazio;
+    EstadoUm      *estadoUm;
+    EstadoDois   *estadoDois;
 public:
     Game(int width, int heigth, const char* name);
     ~Game();
@@ -58,9 +58,9 @@ Game::Game(int width, int heigth, const char* name)
     }   
     glViewport(0, 0, width, heigth);
     this->Main_shader = new Shader("Shaders/mVtxShader.glsl","Shaders/mFragShader.glsl");
-    this->estadoVazio          = new State();
-    this->estadoWildBatalha    = new WildBattle();
-    this->estadoTrainerBatalha = new TrainerBattle();
+    this->estadoVazio = new State();
+    this->estadoUm    = new EstadoUm();
+    this->estadoDois  = new EstadoDois();
 }  
 
 Game::~Game()
@@ -75,10 +75,10 @@ void Game::Render(){
     glClear(GL_COLOR_BUFFER_BIT);
    if(this->state == Start){
         this->estadoVazio->Render(this->Main_shader);
-    }else if(this->state == Wild_Battle){
-        this->estadoWildBatalha->Render(this->Main_shader);
-    }else if(this->state == Trainer_Battle){
-        this->estadoTrainerBatalha->Render(this->Main_shader);
+    }else if(this->state == Estado_Um){
+        this->estadoUm->Render(this->Main_shader);
+    }else if(this->state == Estado_Dois){
+        this->estadoDois->Render(this->Main_shader);
     }
   
 }
@@ -86,11 +86,11 @@ void Game::Update(float deltaTime){
    if(this->state == Start){
         this->estadoVazio->Update(deltaTime);
         //std::cout << "ESTADO START" << std::endl;
-   }else if(this->state == Wild_Battle){
-        this->estadoWildBatalha->Update(deltaTime);
+   }else if(this->state == Estado_Um){
+        this->estadoUm->Update(deltaTime);
         //std::cout << "ESTADO WILD" << std::endl;
-   }else if(this->state == Trainer_Battle){
-        this->estadoTrainerBatalha->Update(deltaTime);
+   }else if(this->state == Estado_Dois){
+        this->estadoDois->Update(deltaTime);
         //std::cout << "ESTADO TRAINER" << std::endl;
    }
 
@@ -102,9 +102,9 @@ void Game::Update(float deltaTime){
     else if(glfwGetKey(janela, GLFW_KEY_1) == GLFW_PRESS){
         this->state = Start;
     }else if(glfwGetKey(janela, GLFW_KEY_2) == GLFW_PRESS){
-        this->state = Wild_Battle;
+        this->state = Estado_Um;
     }else if(glfwGetKey(janela, GLFW_KEY_3) == GLFW_PRESS){
-        this->state = Trainer_Battle;
+        this->state = Estado_Dois;
     }
 }
 

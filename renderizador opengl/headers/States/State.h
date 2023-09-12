@@ -1,6 +1,5 @@
 #pragma once
 #include<iostream>
-#include<Entities/Pokemon.h>
 #include<Primitives/Shader.h>
 #include<Primitives/Texture.h>
 #include<string>
@@ -22,15 +21,15 @@ public:
 
 
 //battle State
-class WildBattle : public State
+class EstadoUm : public State
 {
 private:
-    string estado = "Batalha Wild";
+    string estado = "Estado 1";
     unsigned int VBO;
     unsigned int VAO;
     Texture *text;
 public:
-    WildBattle(/* args */){
+    EstadoUm(/* args */){
         float vertices[] = {//r  g     b       tx   ty
         -1.0f, 1.0f, 0.0f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
          1.0f, 1.0f, 0.0f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
@@ -76,14 +75,14 @@ public:
 
 
 //battle State
-class TrainerBattle : public State
+class EstadoDois : public State
 {
 private:
-    string estado = "Batalha Trainer";
+    string estado = "Estado 2";
     unsigned int VBO;
     unsigned int VAO;
 public:
-    TrainerBattle(/* args */){
+    EstadoDois(/* args */){
         float vertices[] = {//r  g     b
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f,
         0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f,
