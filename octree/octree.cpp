@@ -4,7 +4,6 @@
 
 #include "octree.h"
 #include "iostream"
-
-void octree::test() {
-    std::cout << "Abracadabra" << a << std::endl;
+octree::NodeType octree::Node::classify(Primitive primitive) {
+    return octree::BLACK;
 }
