@@ -1,4 +1,6 @@
+
 #include <iostream>
+#include <glm/vec3.hpp>
 #include "octree/octree.h"
 
 int main() {

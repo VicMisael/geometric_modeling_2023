@@ -19,11 +19,10 @@ namespace octree {
     class Node {
         std::shared_ptr<Node> parent;
         std::shared_ptr<Node> children[8];
-        std::shared_ptr<Node> bounds[8];
+        std::shared_ptr<glm::vec3> bounds[8];
         bool hasChildren;
         NodeType nodeType;
-        NodeType classify(Primitive primitive);
-
+        float edgeLength;
     };
 
     class Octree {
@@ -31,9 +30,13 @@ namespace octree {
         int maxDepth;
 
     private:
-        Octree(Node rootNode) {}
+        Octree(Node rootNode);
+    public:
+        Octree Build(std::shared_ptr<Primitive> primitive);
     };
 
 }
+
+#include <glm/vec3.hpp>
 
 #endif //OCTREE_MODEL_OCTREE_H

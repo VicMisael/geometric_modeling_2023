@@ -6,8 +6,10 @@
 #define OCTREE_MODEL_PRIMITIVE_H
 
 
-class Primitive {
+#include "../octree/octree.h"
 
+class Primitive {
+    virtual octree::NodeType classify() = 0;
 };
 
 

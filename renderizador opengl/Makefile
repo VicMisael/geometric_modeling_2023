@@ -8,3 +8,4 @@ main.o:	source/main.cpp
 glad.o: source/glad.c
 	g++ source/glad.c include/glad/glad.h -c -I include -I headers
 
+♦
