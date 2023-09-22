@@ -4,10 +4,13 @@
 
 #ifndef OCTREE_MODEL_PRIMITIVE_H
 #define OCTREE_MODEL_PRIMITIVE_H
-
-
-#include "../octree/octree.h"
-
+namespace octree {
+    enum NodeType {
+        BLACK,
+        GRAY,
+        WHITE
+    };
+}
 class Primitive {
     virtual octree::NodeType classify() = 0;
 };

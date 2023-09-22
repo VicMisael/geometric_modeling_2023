@@ -4,6 +4,7 @@
 
 #ifndef OCTREE_MODEL_BOX_H
 #define OCTREE_MODEL_BOX_H
+#include "Primitive.h"
 
 
 class Box: public Primitive {

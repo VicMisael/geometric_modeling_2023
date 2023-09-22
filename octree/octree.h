@@ -7,14 +7,11 @@
 
 
 #include <memory>
+#include <glm/vec3.hpp>
+
 #include "../primitives/Primitive.h"
 
 namespace octree {
-    enum NodeType {
-        BLACK,
-        GRAY,
-        WHITE
-    };
 
     class Node {
         std::shared_ptr<Node> parent;
@@ -36,7 +33,5 @@ namespace octree {
     };
 
 }
-
-#include <glm/vec3.hpp>
 
 #endif //OCTREE_MODEL_OCTREE_H
