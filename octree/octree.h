@@ -12,11 +12,14 @@
 #include "../primitives/Primitive.h"
 
 namespace octree {
-
+	struct CubeBounds
+	{
+        std::shared_ptr<glm::vec3> bounds[8];
+	};
     class Node {
         std::shared_ptr<Node> parent;
         std::shared_ptr<Node> children[8];
-        std::shared_ptr<glm::vec3> bounds[8];
+        std::shared_ptr<CubeBounds> bounds;
         bool hasChildren;
         NodeType nodeType;
         float edgeLength;
