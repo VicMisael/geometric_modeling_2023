@@ -7,6 +7,7 @@
 #include<iostream>
 #include<Primitives/Shader.h>
 #include<Primitives/Imagem.h>
+#include<Primitives/Mesh.h>
 
 
 

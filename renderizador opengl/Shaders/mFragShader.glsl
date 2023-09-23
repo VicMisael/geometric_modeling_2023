@@ -11,10 +11,10 @@ uniform bool isText;
 
 void main()
 {
-    if(isText == true){
-        FragColor = texture(ourTexture, TexCoord);
-    }else{
-        FragColor = vec4(ourColor.r, ourColor.g, ourColor.b, 1.0f);
-    }
+    //if(isText == true){
+      //  FragColor = texture(ourTexture, TexCoord);
+    //}else{
+        FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    //}
     
 } 

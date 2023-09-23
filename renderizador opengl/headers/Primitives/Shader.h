@@ -1,10 +1,16 @@
 #pragma once
-#include<glad/glad.h>
 
-#include<string>
-#include<fstream>
-#include<sstream>
-#include<iostream>
+
+#include <glad/glad.h>
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+/*codigo de learn opengl(adaptado)*/
 
 class Shader
 {
@@ -72,6 +78,10 @@ public:
     { 
         glUseProgram(ID); 
     }
+    //getters
+    int getAttrib(const std::string &name){
+        return glGetAttribLocation(ID, name.c_str());
+    }
     // utility uniform functions
     // ------------------------------------------------------------------------
     void setBool(const std::string &name, bool value) const
@@ -89,6 +99,20 @@ public:
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value); 
     }
 
+    void set2dVec(const std::string &name, float val1, float val2){
+        glUniform2f(glGetUniformLocation(ID, name.c_str()), val1, val2);
+    }
+
+    void set3dVec(const std::string &name, float val1, float val2, float val3){
+        glUniform3f(glGetUniformLocation(ID, name.c_str()), val1, val2, val3);
+    }
+
+    void set4dVec(const std::string &name, float val1, float val2, float val3, float val4){
+        glUniform4f(glGetUniformLocation(ID, name.c_str()), val1, val2, val3, val4);
+    }
+    void setMat4(const std::string &name, glm::mat4 matrix){
+        glUniformMatrix4fv(glGetUniformLocation(ID, name.c_str()), 1, GL_FALSE, glm::value_ptr(matrix));
+    }
 private:
     // utility function for checking shader compilation/linking errors.
     // ------------------------------------------------------------------------
@@ -116,3 +140,4 @@ private:
         }
     }
 };
+

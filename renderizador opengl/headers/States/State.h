@@ -1,10 +1,11 @@
 #pragma once
 #include<iostream>
-#include<Primitives/Shader.h>
-#include<Primitives/Texture.h>
+#include<Primitives/Mesh.h>
 #include<string>
+#include<new>
 
 using std::string;
+
 
 class State
 {
@@ -27,47 +28,24 @@ private:
     string estado = "Estado 1";
     unsigned int VBO;
     unsigned int VAO;
+    Mesh* mesh;
     Texture *text;
 public:
     EstadoUm(/* args */){
-        float vertices[] = {//r  g     b       tx   ty
-        -1.0f, 1.0f, 0.0f,  0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-         1.0f, 1.0f, 0.0f,  0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-         1.0f,-1.0f, 0.0f,  0.0f, 0.0f, 0.0f, 1.0f, 1.0f,
-         -1.0f,-1.0f,0.0f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f
-        }; 
-
-        glGenVertexArrays(1, &this->VAO);  
-        glBindVertexArray(this->VAO);
-        glGenBuffers(1, &this->VBO);  
-        glBindBuffer(GL_ARRAY_BUFFER, this->VBO); 
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(0,
-                              3,
-                              GL_FLOAT,
-                              GL_FALSE,
-                              8 * sizeof(float),
-                             (void*)0);
-        glEnableVertexAttribArray(0);  
-
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3*sizeof(float)));
-        glEnableVertexAttribArray(1);  
-
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6*sizeof(float)));
-        glEnableVertexAttribArray(2);  
-
-        std::cout << "mandou os dados\n";
-        this->text = new Texture("resource/background.png", PNG, GL_TEXTURE_2D);
-        if(this->text != nullptr){
-            std::cout << "carregado textura\n";
-            this->text->bind(GL_TEXTURE0, GL_TEXTURE_2D);
-        }
+        
+        Cube tempQ = Cube();
+        mesh = new Mesh(&tempQ);
+       
     }
-    void Render(Shader* s){ 
-        s->setBool("isText", true);
+    
+    void Render(Shader* shader){ 
+        shader->setBool("isText", false);
+        /*s->setBool("isText", true);
         s->use();
         glBindVertexArray(this->VAO);
-        glDrawArrays(GL_QUADS, 0, 4);
+        glDrawArrays(GL_QUADS, 0, 4);*/
+        std::cout << "Renderizando\n";
+        this->mesh->Render(shader, 0);
     }
     void Update(float delta){ }
     string getEstado(){return this->estado;}
@@ -109,6 +87,7 @@ public:
         s->use();
         glBindVertexArray(this->VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(0);
     }
     void Update(float delta){  }
     string getEstado(){return this->estado;}
