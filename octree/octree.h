@@ -7,34 +7,41 @@
 
 
 #include <memory>
+#include <string>
 #include <glm/vec3.hpp>
+#include <utility>
 
 #include "../primitives/Primitive.h"
 
 namespace octree {
 
-    class Node {
-        std::shared_ptr<Node> parent;
-        std::shared_ptr<Node> children[8];
-        glm::vec3 minBound;
-        glm::vec3 maxBound;
-        bool hasChildren;
+    class Node : std::enable_shared_from_this<Node> {
+        std::unique_ptr<Node> children[8];
+        BoundingBox boundingBox;
         NodeType nodeType;
-        float edgeLength;
-        int height;
+    private:
+        void subdivide();
+
+
+    public:
+        void makeTree(const std::shared_ptr<Primitive> &_primitive, int _depth);
+
+        void makeTreeInit(const std::shared_ptr<Primitive> &_primitive, int _depth);
+
+        std::string parse();
+
+        explicit Node(BoundingBox box) : boundingBox(std::move(box)) {};
+
     };
 
     class Octree {
         std::shared_ptr<Node> rootNode;
-        int maxDepth;
-        glm::vec3 min;
-        glm::vec3 max;
-
-    private:
-        explicit Octree(Node rootNode);
 
     public:
-        Octree Build(const std::shared_ptr<Primitive>& primitive, int depth);
+        explicit Octree(const std::shared_ptr<Primitive> &primitive, int depth);
+
+        std::string parse();
+
     };
 
 }

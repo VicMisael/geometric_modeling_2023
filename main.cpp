@@ -2,8 +2,11 @@
 #include <iostream>
 #include <glm/vec3.hpp>
 #include "octree/octree.h"
+#include "primitives/Sphere.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    auto sphere = std::make_shared<Sphere>(glm::vec3(0, 0, 0), 10);
+    auto octree = octree::Octree(sphere, 2 );
+    std::cout << octree.parse() << std::endl;
     return 0;
 }

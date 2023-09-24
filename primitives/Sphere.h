@@ -11,10 +11,15 @@
 #include "Primitive.h"
 
 class Sphere: public Primitive {
-	glm::vec3 Center;
+	glm::vec3 center;
 	float radius;
 public:
-	Sphere(glm::vec3 center, float radius):Center(center),radius(radius){};
+	Sphere(glm::vec3 center, float radius): center(center), radius(radius){}
+
+    octree::NodeType classify(BoundingBox boundingBox) ;
+    BoundingBox minMax() override;
+
+    void transform(glm::mat4x4 matrix) override;
 
 };
 

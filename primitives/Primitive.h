@@ -4,6 +4,12 @@
 
 #ifndef OCTREE_MODEL_PRIMITIVE_H
 #define OCTREE_MODEL_PRIMITIVE_H
+
+#include <tuple>
+#include <glm/vec3.hpp>
+#include <glm/mat4x4.hpp>
+#include "../utils/BoundingBox.h"
+
 namespace octree {
     enum NodeType {
         BLACK,
@@ -12,10 +18,12 @@ namespace octree {
     };
 }
 class Primitive {
-    virtual octree::NodeType classify() = 0;
-
 public:
-    virtual std::tuple<glm::vec3,glm::vec3> minMax()=0;
+    virtual octree::NodeType classify(BoundingBox boundingBox) = 0;
+
+    virtual BoundingBox minMax() = 0;
+
+    virtual void transform(glm::mat4x4 matrix) = 0;
 };
 
 
