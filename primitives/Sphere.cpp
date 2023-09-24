@@ -6,8 +6,8 @@
 
 BoundingBox Sphere::minMax() {
 
-    return {center - glm::vec3(2 * radius),
-            center + glm::vec3(2 * radius)};
+    return {center - glm::vec3( radius),
+            center + glm::vec3( radius)};
 }
 
 void Sphere::transform(glm::mat4x4 matrix) {
