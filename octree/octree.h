@@ -16,17 +16,17 @@
 namespace octree {
 
     class Node : std::enable_shared_from_this<Node> {
-        std::unique_ptr<Node> children[8];
+        std::shared_ptr<Node> children[8];
         BoundingBox boundingBox;
         NodeType nodeType;
+        bool hasChildren = false;
     private:
         void subdivide();
 
 
     public:
         void makeTree(const std::shared_ptr<Primitive> &_primitive, int _depth);
-
-        void makeTreeInit(const std::shared_ptr<Primitive> &_primitive, int _depth);
+        void makeTreeInit(const std::shared_ptr<Primitive>& _primitive, int _depth);
 
         std::string parse();
 
