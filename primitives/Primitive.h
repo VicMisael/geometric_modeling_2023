@@ -13,6 +13,9 @@ namespace octree {
 }
 class Primitive {
     virtual octree::NodeType classify() = 0;
+
+public:
+    virtual std::tuple<glm::vec3,glm::vec3> minMax()=0;
 };
 
 
