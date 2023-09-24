@@ -16,6 +16,6 @@ primitives/Cylinder.h
 primitives/Box.cpp 
 primitives/Box.h
 octree/octree.h
-octree/octree.cpp)
+octree/octree.cpp utils/BoundingBox.cpp utils/BoundingBox.h)
 
 target_link_libraries(${PROJECT_NAME} glm::glm)
