@@ -20,7 +20,7 @@ octree::NodeType Sphere::classify(BoundingBox boundingBox) {
     auto vertexes = boundingBox.generateCubeVertices();
     int cornersInsideCount = 0;
     for (const auto &vertice: vertexes) {
-        if (glm::length(vertice - center) < radius) {
+        if (length(vertice - center) < radius) {
             cornersInsideCount++;
         }
     }

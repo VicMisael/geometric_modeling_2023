@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.00)
 project(octree_model)
 
 set(CMAKE_CXX_STANDARD 23)
