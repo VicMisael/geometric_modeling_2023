@@ -19,9 +19,9 @@ namespace octree {
 }
 class Primitive {
 public:
-    virtual octree::NodeType classify(BoundingBox boundingBox) = 0;
+    [[nodiscard]] virtual octree::NodeType classify(BoundingBox boundingBox) const = 0;
 
-    virtual BoundingBox minMax() = 0;
+    [[nodiscard]] virtual BoundingBox minMax() const = 0;
 
     virtual void transform(glm::mat4x4 matrix) = 0;
 };

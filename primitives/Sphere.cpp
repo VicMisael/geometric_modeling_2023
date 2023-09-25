@@ -4,7 +4,7 @@
 
 #include "Sphere.h"
 
-BoundingBox Sphere::minMax() {
+BoundingBox Sphere::minMax() const {
 
     return {center - glm::vec3( radius),
             center + glm::vec3( radius)};
@@ -14,7 +14,7 @@ void Sphere::transform(glm::mat4x4 matrix) {
     center = matrix * glm::vec4(center, 1);
 }
 
-octree::NodeType Sphere::classify(BoundingBox boundingBox) {
+octree::NodeType Sphere::classify(BoundingBox boundingBox) const {
 
 
     auto vertexes = boundingBox.generateCubeVertices();

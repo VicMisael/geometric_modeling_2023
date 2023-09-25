@@ -16,8 +16,8 @@ class Sphere: public Primitive {
 public:
 	Sphere(glm::vec3 center, float radius): center(center), radius(radius){}
 
-    octree::NodeType classify(BoundingBox boundingBox) ;
-    BoundingBox minMax() override;
+    octree::NodeType classify(BoundingBox boundingBox) const override ;
+    BoundingBox minMax()  const override;
 
     void transform(glm::mat4x4 matrix) override;
 

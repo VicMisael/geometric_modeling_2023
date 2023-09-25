@@ -9,12 +9,23 @@
 #include "Primitive.h"
 
 
-class Box: public Primitive {
-	const glm::vec3 min_point;
-	const glm::vec3 max_point;
+class Box : public Primitive {
+     glm::vec3 min_point;
+     glm::vec3 max_point;
+
+    bool isInsideBoundingBox(glm::vec3 point);
 
 public:
-	Box(glm::vec3 _min_point,glm::vec3 _max_point):min_point(_min_point),max_point(_max_point){};
+    Box(const glm::vec3 _min_point, const glm::vec3 _max_point) : min_point(_min_point), max_point(_max_point) {}
+
+    [[nodiscard]] octree::NodeType classify(BoundingBox boundingBox) const override;
+
+
+    [[nodiscard]] BoundingBox minMax() const override {
+        return {this->min_point, this->max_point};
+    }
+
+    void transform(glm::mat4x4 matrix) override;;
 
 };
 

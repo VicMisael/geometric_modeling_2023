@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.00)
+cmake_minimum_required(VERSION 3.22)
 project(octree_model)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -19,3 +19,5 @@ octree/octree.h
 octree/octree.cpp utils/BoundingBox.cpp utils/BoundingBox.h)
 
 target_link_libraries(${PROJECT_NAME} glm::glm)
+set_property(TARGET ${PROJECT_NAME} PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
