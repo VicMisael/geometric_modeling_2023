@@ -1,7 +1,7 @@
 //
 // Created by misae on 21/09/2023.
 //
-
+#pragma once
 #ifndef OCTREE_MODEL_CYLINDER_H
 #define OCTREE_MODEL_CYLINDER_H
 

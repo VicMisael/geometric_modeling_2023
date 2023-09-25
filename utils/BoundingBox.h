@@ -1,7 +1,7 @@
 //
 // Created by Misael on 24/09/2023.
 //
-
+#pragma once
 #ifndef OCTREE_MODEL_BOUNDINGBOX_H
 #define OCTREE_MODEL_BOUNDINGBOX_H
 
