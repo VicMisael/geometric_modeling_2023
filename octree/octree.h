@@ -27,7 +27,7 @@ namespace octree {
     public:
         void makeTree(const std::shared_ptr<Primitive> &_primitive, int _depth);
         void makeTreeInit(const std::shared_ptr<Primitive>& _primitive, int _depth);
-
+        float volume();
         std::string parse();
 
         explicit Node(BoundingBox box) : boundingBox(std::move(box)) {};
@@ -41,6 +41,7 @@ namespace octree {
         explicit Octree(const std::shared_ptr<Primitive> &primitive, int depth);
 
         std::string parse();
+        float volume();
 
     };
 

@@ -10,10 +10,8 @@ primitives/Primitive.h
 primitives/Primitive.h 
 primitives/Sphere.cpp 
 primitives/Sphere.h 
-primitives/Sphere.h 
-primitives/Cylinder.cpp 
-primitives/Cylinder.h 
-primitives/Box.cpp 
+primitives/Sphere.h
+        primitives/Box.cpp
 primitives/Box.h
 octree/octree.h
 octree/octree.cpp utils/BoundingBox.cpp utils/BoundingBox.h)

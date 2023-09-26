@@ -17,7 +17,7 @@ public:
 	Sphere(glm::vec3 center, float radius): center(center), radius(radius){}
 
     octree::NodeType classify(BoundingBox boundingBox) const override ;
-    BoundingBox minMax()  const override;
+    BoundingBox cubedBoundingBox()  const override;
 
     void transform(glm::mat4x4 matrix) override;
 

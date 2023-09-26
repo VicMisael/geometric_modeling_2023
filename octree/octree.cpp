@@ -80,12 +80,36 @@ std::string octree::Node::parse() {
     return "??";
 }
 
+float octree::Node::volume() {
+    float volume = 0;
+    if (hasChildren) {
+        for (const auto child: children) {
+            switch (child->nodeType) {
+
+                case BLACK:
+                    volume += child->boundingBox.volume();
+                    break;
+                case GRAY:
+                    volume += child->volume();
+                    break;
+                case WHITE:
+                    break;
+            }
+        }
+    }
+    return volume;
+}
+
 
 octree::Octree::Octree(const std::shared_ptr<Primitive> &primitive, int depth) : rootNode(
-        std::make_shared<Node>(primitive->minMax())) {
+        std::make_shared<Node>(primitive->cubedBoundingBox())) {
     rootNode->makeTreeInit(primitive, depth - 1);
 }
 
 std::string octree::Octree::parse() {
     return this->rootNode->parse();
+}
+
+float octree::Octree::volume() {
+    return rootNode->volume();
 }

@@ -4,10 +4,12 @@
 
 #include "Sphere.h"
 
-BoundingBox Sphere::minMax() const {
+BoundingBox Sphere::cubedBoundingBox() const {
 
-    return {center - glm::vec3( radius),
-            center + glm::vec3( radius)};
+//    return {center - glm::vec3( radius),
+//            center + glm::vec3( radius)};
+
+    return BoundingBox::GenerateCubedBoundingBox(center - glm::vec3(radius), center + glm::vec3(radius));
 }
 
 void Sphere::transform(glm::mat4x4 matrix) {
@@ -20,7 +22,7 @@ octree::NodeType Sphere::classify(BoundingBox boundingBox) const {
     auto vertexes = boundingBox.generateCubeVertices();
     int cornersInsideCount = 0;
     for (const auto &vertice: vertexes) {
-        if (length(vertice - center) < radius) {
+        if (length(vertice - center) <= radius) {
             cornersInsideCount++;
         }
     }
