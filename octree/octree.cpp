@@ -83,7 +83,7 @@ std::string octree::Node::parse() {
 float octree::Node::volume() {
     float volume = 0;
     if (hasChildren) {
-        for (const auto child: children) {
+        for (const auto& child: children) {
             switch (child->nodeType) {
 
                 case BLACK:

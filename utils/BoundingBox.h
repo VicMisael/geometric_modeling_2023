@@ -24,7 +24,9 @@ public:
     [[nodiscard]] glm::vec3 halfDimensions() const {
         return (max - min) * 0.5f;
     }
+
     float volume();
+
     std::vector<glm::vec3> generateCubeVertices() {
         std::vector<glm::vec3> vertices(8);
 
