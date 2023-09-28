@@ -30,6 +30,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "/O2 ")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "/O2")
 endif()
 if(UNIX)
+
+endif()
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -mavx2")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "-O2 -og -mavx2")
-endif()

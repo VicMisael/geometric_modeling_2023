@@ -23,7 +23,7 @@ namespace Raytracer {
 
 
 
-        const auto sampler = generateSampler(1);
+        const auto sampler = generateSampler(25);
 
 //    std::shared_ptr<VirtualObject> object = std::make_shared<Ball>(Point3(0, 0, 0), 50,
 //                                                                   std::make_shared<Phong>(ColorVec(0.5, 0.5, 0.5), 1,
