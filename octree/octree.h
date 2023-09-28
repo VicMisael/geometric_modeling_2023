@@ -53,6 +53,9 @@ namespace octree {
 
         float volume();
 
+        void scale(float size);
+        void Translate(glm::vec3 point);
+
     };
 
 }

@@ -19,8 +19,7 @@ static std::shared_ptr<sampler> generateSampler(const int numsamples) {
 }
 
 namespace Raytracer {
-    void render(std::shared_ptr<VirtualObject> object,const uint32_t w,const uint32_t h) {
-
+    void render(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
 
 
         const auto sampler = generateSampler(25);
@@ -31,7 +30,7 @@ namespace Raytracer {
         auto selectedWorld = worlds::buildingsScene(std::move(object));
 
 
-        auto *drawcanvas = new imagecanvas(w, h, "buildingsfinalnonm");
+        auto *drawcanvas = new imagecanvas(w, h, filename);
 
         constexpr int32_t recursion_depth_limit = 4;
 

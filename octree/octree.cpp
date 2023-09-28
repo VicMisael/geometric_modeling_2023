@@ -113,3 +113,7 @@ std::string octree::Octree::parse() {
 float octree::Octree::volume() {
     return rootNode->volume();
 }
+
+void octree::Octree::scale(float size) {
+
+}

@@ -9,7 +9,7 @@
 #include "rt_interface/InterceptableOctree.h"
 
 int main() {
-    auto sphere = std::make_shared<Sphere>(glm::vec3(0, 30, 0), 20);
+    auto sphere = std::make_shared<Sphere>(60);
     auto octree = std::make_shared<octree::Octree>(sphere, 4);
     std::cout << octree->parse() << std::endl;
     std::cout << octree->volume() << std::endl;
@@ -22,6 +22,6 @@ int main() {
                                                                                   std::make_shared<Phong>(
                                                                                           ColorVec(0.5, 0.5, 0.5), 1,
                                                                                           1, 25));
-    Raytracer::render(object, 1300, 1300);
+    Raytracer::render(object, "plane", 1300, 1300);
     return 0;
 }
