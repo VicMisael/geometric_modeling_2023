@@ -8,13 +8,20 @@
 
 #include "../strippedRayTracer/RayTracerRedone/tracer/objects/VirtualObject.h"
 #include "../octree/octree.h"
+#include "IntersectionTests.h"
 
 class InterceptableOctree : public VirtualObject {
     const std::shared_ptr<octree::Octree> octree;
 private:
-    [[nodiscard]] std::optional<intersectionRec>  checkNodeIntersection(const Ray &ray, const std::shared_ptr<octree::Node> node) const;
+    [[nodiscard]] std::optional<intersectionRec>
+    checkNodeIntersection(const Ray &ray, const std::shared_ptr<octree::Node> node) const;
+
+    [[nodiscard]] std::optional<RTUtils::rt_output>
+    treeIntersects(const Ray &ray, const std::shared_ptr<octree::Node> node) const;
+
 public:
-    explicit InterceptableOctree(const std::shared_ptr<octree::Octree>& octree, const std::shared_ptr<Material> &material);
+    explicit InterceptableOctree(const std::shared_ptr<octree::Octree> &octree,
+                                 const std::shared_ptr<Material> &material);
 
     [[nodiscard]] std::optional<intersectionRec> intersects(const Ray &ray) const override;
 

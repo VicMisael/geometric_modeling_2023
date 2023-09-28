@@ -6,6 +6,7 @@
 
 
 #include <thread>
+#include <utility>
 #include "tracer/scene/Scene.h"
 #include "imageoutputcanvas/imagecanvas.h"
 #include "worlds.h"
@@ -18,19 +19,16 @@ static std::shared_ptr<sampler> generateSampler(const int numsamples) {
 }
 
 namespace Raytracer {
-    void render(std::shared_ptr<VirtualObject> object) {
+    void render(std::shared_ptr<VirtualObject> object,const uint32_t w,const uint32_t h) {
 
 
-        const uint32_t w = 650;
-        const uint32_t h = 650;
 
-
-        const auto sampler = generateSampler(10);
+        const auto sampler = generateSampler(1);
 
 //    std::shared_ptr<VirtualObject> object = std::make_shared<Ball>(Point3(0, 0, 0), 50,
 //                                                                   std::make_shared<Phong>(ColorVec(0.5, 0.5, 0.5), 1,
 //                                                                                           1, 25));
-        auto selectedWorld = worlds::buildingsScene(object);
+        auto selectedWorld = worlds::buildingsScene(std::move(object));
 
 
         auto *drawcanvas = new imagecanvas(w, h, "buildingsfinalnonm");

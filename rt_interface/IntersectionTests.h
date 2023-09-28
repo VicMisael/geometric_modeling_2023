@@ -10,12 +10,19 @@
 #include "../strippedRayTracer/RayTracerRedone/tracer/scene/Ray.h"
 
 namespace RTUtils {
+    struct rt_output {
+        float tmin;
+        glm::vec3 point;
+        glm::vec3 normal;
+        float u;
+        float v;
+        bool isset = false;
+    };
 
-    std::optional<intersectionRec>
-    processBoundingBoxIntersection(const Ray &ray,const glm::vec3 &min, const glm::vec3 &max, const std::shared_ptr<Material>& material) ;
+    std::optional<rt_output>
+    processBoundingBoxIntersection(const Ray &ray, const glm::vec3 &min, const glm::vec3 &max);
 
-    bool checkIntersection(const Ray &ray);
-
+    bool intersects(const Ray &ray, const glm::vec3 &min, const glm::vec3 &max);
 } // RTUtils
 
 #endif //OCTREE_MODEL_INTERSECTIONTESTS_H

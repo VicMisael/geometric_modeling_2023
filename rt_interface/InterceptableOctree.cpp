@@ -5,26 +5,6 @@
 #include "InterceptableOctree.h"
 #include "IntersectionTests.h"
 
-std::optional<intersectionRec>
-InterceptableOctree::checkNodeIntersection(const Ray &ray, const std::shared_ptr<octree::Node> node) const {
-    switch (node->nodeType) {
-
-        case octree::BLACK:
-            if (RTUtils::checkIntersection(ray))
-                return RTUtils::processBoundingBoxIntersection(ray, node->boundingBox.min, node->boundingBox.max,
-                                                               this->material);
-            break;
-        case octree::GRAY: {
-            if (RTUtils::checkIntersection(ray)) {
-
-            }
-        }
-            break;
-        case octree::WHITE:
-            return {};
-            break;
-    }
-};
 
 std::optional<intersectionRec> InterceptableOctree::intersects(const Ray &ray) const {
     return checkNodeIntersection(ray, octree->rootNode);
@@ -58,6 +38,64 @@ bool InterceptableOctree::hasBoundingBox() const {
 InterceptableOctree::InterceptableOctree(const std::shared_ptr<octree::Octree> &_octree,
                                          const std::shared_ptr<Material> &material) : octree(_octree),
                                                                                       VirtualObject(material) {
-
 }
 
+std::optional<intersectionRec>
+InterceptableOctree::checkNodeIntersection(const Ray &ray, const std::shared_ptr<octree::Node> node) const {
+    const auto result = treeIntersects(ray, node);
+    if (result.has_value()) {
+        const auto resultVal = result.value();
+        return intersectionRec{resultVal.tmin, resultVal.point, resultVal.normal, this->material, resultVal.u,
+                               resultVal.v};
+    }
+    return {};
+}
+
+std::optional<RTUtils::rt_output>
+InterceptableOctree::treeIntersects(const Ray &ray, const std::shared_ptr<octree::Node> node) const {
+    float t_min = std::numeric_limits<float>::max();
+    if (RTUtils::intersects(ray, node->boundingBox.min, node->boundingBox.max)) {
+        RTUtils::rt_output output{};
+        for (const auto &child: node->children) {
+            const auto min = child->boundingBox.min;
+            const auto max = child->boundingBox.max;
+            if (RTUtils::intersects(ray, min, max)) {
+                switch (child->nodeType) {
+                    case octree::BLACK: {
+                        const auto result = RTUtils::processBoundingBoxIntersection(ray, min, max);
+                        if (result.has_value() && result.value().tmin < t_min) {
+                            output = result.value();
+                            t_min = output.tmin;
+                        }
+                    }
+                        break;
+                    case octree::GRAY: {
+                        const auto result = treeIntersects(ray, child);
+                        if (result.has_value() && result.value().isset && result.value().tmin < t_min) {
+                            const auto res = result.value();
+                            output = result.value();
+                            t_min = output.tmin;
+                        }
+                    }
+                        break;
+                    default://ignore
+                        break;
+                }
+            }
+
+        }
+
+        return output;
+    }
+    return {};
+}
+
+//if (child->nodeType == octree::BLACK &&) {
+//return RTUtils::processBoundingBoxIntersection(ray, min, max, this->material);
+//} else if (child->nodeType == octree::GRAY &&
+//        RTUtils::intersects(ray, min, max)) {
+//auto result = checkNodeIntersection(ray, child);
+//if (result.has_value()) {
+//return result;
+//}
+//}

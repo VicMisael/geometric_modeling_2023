@@ -3,7 +3,6 @@
 //
 
 #include "IntersectionTests.h"
-#include "../strippedRayTracer/RayTracerRedone/tracer/scene/Ray.h"
 
 
 bool intersects(const Ray &ray, float &t_min, float &t_max, const glm::vec3 &min_, const glm::vec3 &max_) {
@@ -66,24 +65,26 @@ get_uv(const glm::vec3 &hit_point, const glm::vec3 &normal, const glm::vec3 &min
     return {0, 0}; // Fallback
 }
 
-std::optional<intersectionRec>
-RTUtils::processBoundingBoxIntersection(const Ray &ray, const glm::vec3 &min, const glm::vec3 &max,
-                                        const std::shared_ptr<Material> &material) {
-    float t_min = 0;
+std::optional<RTUtils::rt_output>
+RTUtils::processBoundingBoxIntersection(const Ray &ray, const glm::vec3 &min, const glm::vec3 &max) {
+    float t_min = -std::numeric_limits<float>::max();;
     float t_max = std::numeric_limits<float>::max();
     if (!intersects(ray, t_min, t_max, min, max)) {
+        return {};
+    }
+    if (t_min < 0) {
         return {};
     }
     float t_hit = glm::max(0.0f, t_min);
     const auto hitPoint = ray.point_at(t_hit);
     const auto normal = getNormal(hitPoint, min, max);
     const auto [u, v] = get_uv(hitPoint, normal, min, max);
-    return intersectionRec{t_min, hitPoint, normal, material, u, v};
+    return RTUtils::rt_output{t_hit, hitPoint, normal, u, v, true};
 
 }
 
-bool
-        RTUtils::checkIntersection(const Ray &ray){
-
-
+bool RTUtils::intersects(const Ray &ray, const glm::vec3 &min, const glm::vec3 &max) {
+    float t_min = -std::numeric_limits<float>::max();;
+    float t_max = std::numeric_limits<float>::max();
+    return intersects(ray, t_min, t_max, min, max);
 }
