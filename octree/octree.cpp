@@ -3,10 +3,8 @@
 //
 
 #include "octree.h"
-
+#include <glm/gtc/matrix_transform.hpp>
 #include <string>
-#include <glm/geometric.hpp>
-#include <utility>
 
 
 void octree::Node::subdivide() {
@@ -83,7 +81,7 @@ std::string octree::Node::parse() {
 float octree::Node::volume() {
     float volume = 0;
     if (hasChildren) {
-        for (const auto& child: children) {
+        for (const auto &child: children) {
             switch (child->nodeType) {
 
                 case BLACK:
@@ -98,6 +96,31 @@ float octree::Node::volume() {
         }
     }
     return volume;
+}
+
+void octree::Node::translate(glm::vec3 point) {
+    auto matrix = glm::translate(glm::mat4x4(1.0f), point);
+    glm::vec3 min = matrix * glm::vec4(boundingBox.min, 1);
+    glm::vec3 max = matrix * glm::vec4(boundingBox.max, 1);
+    this->boundingBox.min = min;
+    this->boundingBox.max = max;
+    if (hasChildren) {
+        for (const auto &child: children) {
+            child->translate(point);
+        }
+    }
+
+}
+
+void octree::Node::scale(float size) {
+    auto matrix = glm::scale(glm::mat4x4(1.0f), glm::vec3(size));
+    this->boundingBox.min = matrix * glm::vec4(this->boundingBox.min, 1);
+    this->boundingBox.max = matrix * glm::vec4(this->boundingBox.max, 1);
+    if (hasChildren) {
+        for (const auto &child: children) {
+            child->scale(size);
+        }
+    }
 }
 
 
@@ -115,5 +138,9 @@ float octree::Octree::volume() {
 }
 
 void octree::Octree::scale(float size) {
+    this->rootNode->scale(size);
+}
 
+void octree::Octree::translate(glm::vec3 point) {
+    this->rootNode->translate(point);
 }

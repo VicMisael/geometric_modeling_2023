@@ -10,12 +10,12 @@
 
 class BoundingBox {
 public:
-    const glm::vec3 min;
-    const glm::vec3 max;
+    glm::vec3 min;
+    glm::vec3 max;
 
-    BoundingBox(glm::vec3 min,glm::vec3 max): min(min), max(max){}
+    BoundingBox(glm::vec3 min, glm::vec3 max) : min(min), max(max) {}
 
-    static BoundingBox GenerateCubedBoundingBox(glm::vec3 min,glm::vec3 max);
+    static BoundingBox GenerateCubedBoundingBox(glm::vec3 min, glm::vec3 max);
 
     [[nodiscard]] glm::vec3 center() const {
         return (min + max) * 0.5f;

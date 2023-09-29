@@ -31,6 +31,11 @@ namespace octree {
 
         std::string parse();
 
+        void translate(glm::vec3 vec3);
+
+        void scale(float size);
+
+
         explicit Node(BoundingBox box) : boundingBox(std::move(box)) {};
 
     private:
@@ -54,7 +59,8 @@ namespace octree {
         float volume();
 
         void scale(float size);
-        void Translate(glm::vec3 point);
+
+        void translate(glm::vec3 point);
 
     };
 

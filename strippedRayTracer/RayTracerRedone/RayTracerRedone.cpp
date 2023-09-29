@@ -19,7 +19,7 @@ static std::shared_ptr<sampler> generateSampler(const int numsamples) {
 }
 
 namespace Raytracer {
-    void render(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
+    void render1(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
 
 
         const auto sampler = generateSampler(25);
@@ -27,12 +27,72 @@ namespace Raytracer {
 //    std::shared_ptr<VirtualObject> object = std::make_shared<Ball>(Point3(0, 0, 0), 50,
 //                                                                   std::make_shared<Phong>(ColorVec(0.5, 0.5, 0.5), 1,
 //                                                                                           1, 25));
-        auto selectedWorld = worlds::buildingsScene(std::move(object));
+        auto selectedWorld = worlds::buildingsScene(object);
 
 
         auto *drawcanvas = new imagecanvas(w, h, filename);
 
         constexpr int32_t recursion_depth_limit = 4;
+
+        Scene scene(selectedWorld, drawcanvas);
+        //auto cam = std::make_shared<Camera>(Point3(690, 710, 180), Point3(40, 30, 105), Vector3(0, 1, 0));
+
+        auto t1 = std::chrono::high_resolution_clock::now();
+        scene.render(recursion_depth_limit, sampler);
+
+        auto t2 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> ms_double = t2 - t1;
+        const auto seconds = ms_double.count() / 1000;
+
+        scene.draw();
+
+        std::cout << " Took";
+        std::cout << seconds << "s" << std::endl;
+
+
+    }
+
+    void render2(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
+
+
+        const auto sampler = generateSampler(3);
+
+        auto selectedWorld = worlds::simpleScene(object);
+
+
+        auto *drawcanvas = new imagecanvas(w, h, std::move(filename));
+
+        constexpr int32_t recursion_depth_limit = 4;
+
+        Scene scene(selectedWorld, drawcanvas);
+        //auto cam = std::make_shared<Camera>(Point3(690, 710, 180), Point3(40, 30, 105), Vector3(0, 1, 0));
+
+        auto t1 = std::chrono::high_resolution_clock::now();
+        scene.render(recursion_depth_limit, sampler);
+
+        auto t2 = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> ms_double = t2 - t1;
+        const auto seconds = ms_double.count() / 1000;
+
+        scene.draw();
+
+        std::cout << " Took";
+        std::cout << seconds << "s" << std::endl;
+
+
+    }
+
+    void render3(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
+
+
+        const auto sampler = generateSampler(3);
+
+        auto selectedWorld = worlds::buildingsScene2(object);
+
+
+        auto *drawcanvas = new imagecanvas(w, h, std::move(filename));
+
+        constexpr int32_t recursion_depth_limit = 2;
 
         Scene scene(selectedWorld, drawcanvas);
         //auto cam = std::make_shared<Camera>(Point3(690, 710, 180), Point3(40, 30, 105), Vector3(0, 1, 0));
