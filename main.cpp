@@ -9,7 +9,7 @@
 
 int main() {
     auto sphere = std::make_shared<Sphere>(40 / 3.0f);
-    auto octree = std::make_shared<octree::Octree>(sphere, 10);
+    auto octree = std::make_shared<octree::Octree>(sphere, 6);
     std::cout << octree->parse() << std::endl;
     std::cout << octree->volume() << std::endl;
     auto box = std::make_shared<Box>(glm::vec3(-50, 0, -50), glm::vec3(50, 50, 50));

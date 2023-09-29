@@ -32,5 +32,5 @@ endif ()
 if (UNIX)
 
 endif ()
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -ffast-math -mavx2")
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -og -ffast-math -mavx2")
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -ffast-math -mavx2")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -og -ffast-math -mavx2")
