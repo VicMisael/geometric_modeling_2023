@@ -27,6 +27,8 @@ namespace octree {
 
         void makeTreeInit(const std::shared_ptr<Primitive> &_primitive, int _depth);
 
+        int depth();
+
         float volume();
 
         std::string parse();
@@ -58,9 +60,15 @@ namespace octree {
 
         float volume();
 
+        int depth();
+
         void scale(float size);
 
         void translate(glm::vec3 point);
+
+        Octree octreeUnion(const Octree other);
+
+        Octree octreeIntersection(const Octree other);
 
     };
 

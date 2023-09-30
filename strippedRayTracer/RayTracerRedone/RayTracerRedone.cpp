@@ -85,7 +85,7 @@ namespace Raytracer {
     void render3(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
 
 
-        const auto sampler = generateSampler(3);
+        const auto sampler = generateSampler(20);
 
         auto selectedWorld = worlds::buildingsScene2(object);
 

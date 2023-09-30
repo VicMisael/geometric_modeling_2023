@@ -146,7 +146,7 @@ namespace worlds {
 
 
         auto world = World(vp, objects, lights, AmbientLight(0, ColorVec(1, 1, 1)), ColorVec(0.1, 0.1, 0.4), true);
-        auto cam = std::make_shared<Camera>(Point3(90, 90, -150), Point3(-30, 0, 105), Vector3(0, 1, 0));
+        auto cam = std::make_shared<Camera>(Point3(90, 90, -350), Point3(-30, 0, 105), Vector3(0, 1, 0));
         world.withCamera(cam);
         world.withAreaLights(arealights);
         return world;

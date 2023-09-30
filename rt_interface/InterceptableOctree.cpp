@@ -89,13 +89,3 @@ InterceptableOctree::treeIntersects(const Ray &ray, const std::shared_ptr<octree
     }
     return {};
 }
-
-//if (child->nodeType == octree::BLACK &&) {
-//return RTUtils::processBoundingBoxIntersection(ray, min, max, this->material);
-//} else if (child->nodeType == octree::GRAY &&
-//        RTUtils::intersects(ray, min, max)) {
-//auto result = checkNodeIntersection(ray, child);
-//if (result.has_value()) {
-//return result;
-//}
-//}

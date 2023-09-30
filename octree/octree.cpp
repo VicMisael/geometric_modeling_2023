@@ -123,6 +123,19 @@ void octree::Node::scale(float size) {
     }
 }
 
+int octree::Node::depth() {
+    if (nodeType == GRAY) {
+        int largestDepth = 0;
+        for (const auto &child: children) {
+            int depth = 1 + child->depth();
+            if (depth > largestDepth)
+                largestDepth = depth;
+        }
+        return largestDepth;
+    }
+    return 1;
+}
+
 
 octree::Octree::Octree(const std::shared_ptr<Primitive> &primitive, int depth) : rootNode(
         std::make_shared<Node>(primitive->cubedBoundingBox())) {
@@ -143,4 +156,16 @@ void octree::Octree::scale(float size) {
 
 void octree::Octree::translate(glm::vec3 point) {
     this->rootNode->translate(point);
+}
+
+int octree::Octree::depth() {
+    return rootNode->depth();
+}
+
+octree::Octree octree::Octree::octreeUnion(const octree::Octree other) {
+   //
+}
+
+octree::Octree octree::Octree::octreeIntersection(const octree::Octree other) {
+    //
 }

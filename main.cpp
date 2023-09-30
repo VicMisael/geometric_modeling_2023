@@ -9,7 +9,7 @@
 
 int main() {
     auto sphere = std::make_shared<Sphere>(40 / 3.0f);
-    auto octree = std::make_shared<octree::Octree>(sphere, 6);
+    auto octree = std::make_shared<octree::Octree>(sphere, 8);
     std::cout << octree->parse() << std::endl;
     std::cout << octree->volume() << std::endl;
     auto box = std::make_shared<Box>(glm::vec3(-50, 0, -50), glm::vec3(50, 50, 50));
@@ -18,15 +18,17 @@ int main() {
     std::cout << boxOct->volume() << std::endl;
 
     octree->scale(5);
-    //octree->translate(glm::vec3(43, 13, -52));
+    octree->translate(glm::vec3(43, 13, -52));
 
 
+    std::cout << octree->depth() << std::endl;
     std::shared_ptr<VirtualObject> object = std::make_shared<InterceptableOctree>(octree,
                                                                                   std::make_shared<Phong>(
-                                                                                          ColorVec(0.5, 0.5, 0.5), 1,
-                                                                                          1, 25));
-    //Raytracer::render1(object, "plane", 600, 600);
-    Raytracer::render2(object, "plane2", 600, 600);
-    //Raytracer::render3(object, "plane3", 600, 600);
+                                                                                          ColorVec(0.5, 0.5, 0.5), 1, 1,
+                                                                                          25));
+
+    Raytracer::render1(object, "plane", 300, 300);
+    //Raytracer::render2(object, "plane2", 600, 600);
+    // Raytracer::render3(object, "plane3", 600, 600);
     return 0;
 }
