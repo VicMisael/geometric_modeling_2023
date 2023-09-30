@@ -18,7 +18,13 @@ BoundingBox BoundingBox::GenerateCubedBoundingBox(glm::vec3 min, glm::vec3 max) 
     return {minCorner, maxCorner};
 }
 
-float BoundingBox::volume() {
+float BoundingBox::volume() const {
     glm::vec3 dimensions = max - min;
     return dimensions.x * dimensions.y * dimensions.z;
+}
+
+BoundingBox BoundingBox::GenerateCubeByCenterAndSideLength(glm::vec3 center, float side_length) {
+    glm::vec3 min = center - glm::vec3(side_length / 2);
+    glm::vec3 max = center + glm::vec3(side_length / 2);
+    return {min, max};
 }

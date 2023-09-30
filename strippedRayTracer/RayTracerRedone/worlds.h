@@ -66,12 +66,10 @@ namespace worlds {
         const auto socceball_bm = std::make_shared<BumpMapping>(soccerball, std::make_shared<ImageTexture>(
                 "assets/normalmaps/football-normals-512.png"));
 
-        objects.push_back(std::make_shared<Ball>(Point3(-20, 25, 40), 10, socceball_bm));
 
         const auto vp = std::make_shared<ViewPlane>(15, 15, 10, 1);
 
-        objects.push_back(std::make_shared<Ball>(Point3(40, 30, 105), 25,
-                                                 phong_reflective_higher_exp));
+
 
         std::vector<std::shared_ptr<VectorialLight>> lights;
 
@@ -146,7 +144,7 @@ namespace worlds {
 
 
         auto world = World(vp, objects, lights, AmbientLight(0, ColorVec(1, 1, 1)), ColorVec(0.1, 0.1, 0.4), true);
-        auto cam = std::make_shared<Camera>(Point3(90, 90, -350), Point3(-30, 0, 105), Vector3(0, 1, 0));
+        auto cam = std::make_shared<Camera>(Point3(90, 90, -250), Point3(-30, 0, 105), Vector3(0, 1, 0));
         world.withCamera(cam);
         world.withAreaLights(arealights);
         return world;

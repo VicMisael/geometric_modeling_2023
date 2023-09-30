@@ -1,0 +1,7 @@
+/cmake-build-release-visual-studio/
+/cmake-build-release/
+/out/
+/cmake-build-relwithdebinfo/
+/cmake-build-minsizerel/
+/cmake-build-debug/
+/.vs/

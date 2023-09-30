@@ -17,6 +17,8 @@ public:
 
     static BoundingBox GenerateCubedBoundingBox(glm::vec3 min, glm::vec3 max);
 
+    static BoundingBox GenerateCubeByCenterAndSideLength(glm::vec3 center, float side_length);
+
     [[nodiscard]] glm::vec3 center() const {
         return (min + max) * 0.5f;
     }
@@ -25,7 +27,7 @@ public:
         return (max - min) * 0.5f;
     }
 
-    float volume();
+    float volume() const;
 
     std::vector<glm::vec3> generateCubeVertices() {
         std::vector<glm::vec3> vertices(8);

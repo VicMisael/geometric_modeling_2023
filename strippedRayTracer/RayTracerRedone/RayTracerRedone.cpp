@@ -30,7 +30,7 @@ namespace Raytracer {
         auto selectedWorld = worlds::buildingsScene(object);
 
 
-        auto *drawcanvas = new imagecanvas(w, h, filename);
+        auto *drawcanvas = new imagecanvas(w, h, std::move(filename));
 
         constexpr int32_t recursion_depth_limit = 4;
 
@@ -55,7 +55,7 @@ namespace Raytracer {
     void render2(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
 
 
-        const auto sampler = generateSampler(3);
+        const auto sampler = generateSampler(16);
 
         auto selectedWorld = worlds::simpleScene(object);
 

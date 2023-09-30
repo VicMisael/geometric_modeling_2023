@@ -8,7 +8,7 @@
 
 
 void octree::Node::subdivide() {
-    hasChildren = true;
+    isLeaf = false;
     const glm::vec3 mid = this->boundingBox.center();
     children[0] = std::make_shared<Node>(BoundingBox(boundingBox.min, mid)); // Bottom-front-left
     children[1] = std::make_shared<Node>(BoundingBox(glm::vec3(mid.x, boundingBox.min.y, boundingBox.min.z),
@@ -51,12 +51,10 @@ void octree::Node::makeTreeInit(const std::shared_ptr<Primitive> &_primitive, in
         this->subdivide();
         for (auto &child: children) {
             child->makeTree(_primitive, _depth - 1);
-
         }
     } else {
         nodeType = BLACK;
     }
-
 }
 
 std::string octree::Node::parse() {
@@ -65,7 +63,7 @@ std::string octree::Node::parse() {
             return "B";
         case GRAY: {
             std::string start = "(";
-            if (hasChildren) {
+            if (!isLeaf) {
                 for (const auto &child: children) {
                     start += child->parse();
                 }
@@ -80,10 +78,9 @@ std::string octree::Node::parse() {
 
 float octree::Node::volume() {
     float volume = 0;
-    if (hasChildren) {
+    if (!isLeaf) {
         for (const auto &child: children) {
             switch (child->nodeType) {
-
                 case BLACK:
                     volume += child->boundingBox.volume();
                     break;
@@ -104,19 +101,18 @@ void octree::Node::translate(glm::vec3 point) {
     glm::vec3 max = matrix * glm::vec4(boundingBox.max, 1);
     this->boundingBox.min = min;
     this->boundingBox.max = max;
-    if (hasChildren) {
+    if (!isLeaf) {
         for (const auto &child: children) {
             child->translate(point);
         }
     }
-
 }
 
 void octree::Node::scale(float size) {
     auto matrix = glm::scale(glm::mat4x4(1.0f), glm::vec3(size));
     this->boundingBox.min = matrix * glm::vec4(this->boundingBox.min, 1);
     this->boundingBox.max = matrix * glm::vec4(this->boundingBox.max, 1);
-    if (hasChildren) {
+    if (!isLeaf) {
         for (const auto &child: children) {
             child->scale(size);
         }
@@ -137,9 +133,79 @@ int octree::Node::depth() {
 }
 
 
+void octree::Node::copyTree(std::shared_ptr<Node> dest, std::shared_ptr<Node> src) {
+    for (int i = 0; i < 8; i++) {
+        if (src->children[i]->nodeType != octree::GRAY) {
+            const auto type = src->children[i]->nodeType;
+            dest->children[i]->nodeType = type;
+        } else {
+            dest->children[i]->subdivide();
+            dest->children[i]->nodeType = GRAY;
+            copyTree(dest->children[i], src->children[i]);
+        }
+    }
+}
+
+
+std::shared_ptr<octree::Node> octree::Node::standardize(const std::shared_ptr<Node> &node) {
+    if (node->isRoot) {
+        auto newRoot = std::make_shared<Node>(standardBoundingBox);
+        newRoot->nodeType = GRAY;
+        newRoot->isRoot = true;
+        newRoot->subdivide();
+        copyTree(newRoot, node);
+        return newRoot;
+    }
+}
+
+std::shared_ptr<octree::Node>
+octree::Node::intersection(const std::shared_ptr<Node> &a, const std::shared_ptr<Node> &b) {
+    auto destination = std::make_shared<Node>(standardBoundingBox);
+    const auto standardizedA = standardize(a);
+    const auto standardizedB = standardize(b);
+    destination->subdivide();
+    destination->nodeType = GRAY;
+    intersectionHelper(destination, standardizedA, standardizedB);
+    return destination;
+}
+
+void octree::Node::intersectionHelper(const std::shared_ptr<Node> &result, const std::shared_ptr<Node> &a,
+                                      const std::shared_ptr<Node> &b) {
+    for (int i = 0; i < 8; i++) {
+        //Ambos folhas
+        if (a->children[i]->isLeaf && b->children[i]->isLeaf) {
+            if (a->children[i]->nodeType == BLACK && b->children[i]->nodeType == BLACK) {
+                result->children[i]->nodeType = BLACK;
+            } else {
+                result->children[i]->nodeType = WHITE;
+            }
+        } else if (a->children[i]->isLeaf ^ b->children[i]->isLeaf) {
+            const auto nodeA = a->children[i];
+            const auto nodeB = b->children[i];
+            if (nodeA->nodeType == WHITE || nodeB->nodeType == WHITE) {
+                result->children[i]->nodeType = WHITE;
+            } else {
+                result->children[i]->nodeType = GRAY;
+                result->children[i]->subdivide();
+                auto children=nodeA->nodeType == GRAY ? nodeA->children : nodeB->children;
+                for (int j = 0; j < 8; j++)
+                {
+                   result->children[i]->children[j] = children[j];
+                }
+            }
+        } else {
+            result->children[i]->subdivide();
+            result->children[i]->nodeType = GRAY;
+            intersectionHelper(result->children[i], a->children[i], b->children[i]);
+        }
+    }
+}
+
+
 octree::Octree::Octree(const std::shared_ptr<Primitive> &primitive, int depth) : rootNode(
         std::make_shared<Node>(primitive->cubedBoundingBox())) {
     rootNode->makeTreeInit(primitive, depth - 1);
+    rootNode->isRoot = true;
 }
 
 std::string octree::Octree::parse() {
@@ -162,10 +228,10 @@ int octree::Octree::depth() {
     return rootNode->depth();
 }
 
-octree::Octree octree::Octree::octreeUnion(const octree::Octree other) {
-   //
+std::shared_ptr<octree::Octree> octree::Octree::octreeIntersection(const std::shared_ptr<octree::Octree> &other) {
+    std::shared_ptr<Node> Result = Node::intersection(this->rootNode, other->rootNode);
+    return std::make_shared<octree::Octree>(Result);
 }
 
-octree::Octree octree::Octree::octreeIntersection(const octree::Octree other) {
-    //
+octree::Octree::Octree(const std::shared_ptr<Node> root) : rootNode(root) {
 }

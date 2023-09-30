@@ -13,80 +13,80 @@
 
 #include "../primitives/Primitive.h"
 
-namespace octree {
+namespace octree
+{
+	const auto standardBoundingBox = BoundingBox::GenerateCubeByCenterAndSideLength(glm::vec3(0, 0, 0), 30);
 
-    class Node : std::enable_shared_from_this<Node> {
+	class Node : std::enable_shared_from_this<Node>
+	{
+	public:
+		NodeType nodeType;
+		BoundingBox boundingBox;
+		bool isLeaf = true;
+		std::shared_ptr<Node> children[8];
+		bool isRoot = false;
 
-    public:
-        NodeType nodeType;
-        BoundingBox boundingBox;
-        bool hasChildren = false;
-        std::shared_ptr<Node> children[8];
+		void makeTree(const std::shared_ptr<Primitive>& _primitive, int _depth);
 
-        void makeTree(const std::shared_ptr<Primitive> &_primitive, int _depth);
+		void makeTreeInit(const std::shared_ptr<Primitive>& _primitive, int _depth);
 
-        void makeTreeInit(const std::shared_ptr<Primitive> &_primitive, int _depth);
+		int depth();
 
-        int depth();
+		float volume();
 
-        float volume();
+		std::string parse();
 
-        std::string parse();
+		void translate(glm::vec3 vec3);
 
-        void translate(glm::vec3 vec3);
+		void scale(float size);
 
-        void scale(float size);
+		glm::vec3 getCenter()
+		{
+			return boundingBox.center();
+		}
+
+		static std::shared_ptr<Node> intersection(const std::shared_ptr<Node>& a, const std::shared_ptr<Node>& b);
+
+		explicit Node(BoundingBox box) : boundingBox(std::move(box))
+		{
+		};
+
+		static std::shared_ptr<Node> standardize(const std::shared_ptr<Node>& node);
+
+	private:
+		static void copyTree(std::shared_ptr<Node> dest, std::shared_ptr<Node> src);
+
+		void subdivide();
+
+		static void intersectionHelper(const std::shared_ptr<Node>& result, const std::shared_ptr<Node>& a,
+		                               const std::shared_ptr<Node>& b);
+	};
+
+	class Octree
+	{
+	private:
 
 
-        explicit Node(BoundingBox box) : boundingBox(std::move(box)) {};
+	public:
+		std::shared_ptr<Node> rootNode;
 
-    private:
+		explicit Octree(std::shared_ptr<Node> root);
+		explicit Octree(const std::shared_ptr<Primitive>& primitive, int depth);
 
+		std::string parse();
 
-        void subdivide();
+		float volume();
 
+		int depth();
 
-    };
+		void scale(float size);
 
-    class Octree {
+		void translate(glm::vec3 point);
 
+		Octree octreeUnion(const Octree other);
 
-    public:
-        std::shared_ptr<Node> rootNode;
-
-        explicit Octree(const std::shared_ptr<Primitive> &primitive, int depth);
-
-        std::string parse();
-
-        float volume();
-
-        int depth();
-
-        void scale(float size);
-
-        void translate(glm::vec3 point);
-
-        Octree octreeUnion(const Octree other);
-
-        Octree octreeIntersection(const Octree other);
-
-    };
-
+		std::shared_ptr<Octree> octreeIntersection(const std::shared_ptr<octree::Octree>& other);
+	};
 }
 
 #endif //OCTREE_MODEL_OCTREE_H
-/*
- * void subdivide() {
-    glm::vec3 mid = (bounds.min + bounds.max) * 0.5f;
-
-    // Define the 8 octants
-    children[0] = std::make_unique<Octree>(BoundingBox(bounds.min, mid), depth + 1); // Bottom-front-left
-    children[1] = std::make_unique<Octree>(BoundingBox(glm::vec3(mid.x, bounds.min.y, bounds.min.z), glm::vec3(bounds.max.x, mid.y, mid.z)), depth + 1); // Bottom-front-right
-    children[2] = std::make_unique<Octree>(BoundingBox(glm::vec3(bounds.min.x, bounds.min.y, mid.z), glm::vec3(mid.x, mid.y, bounds.max.z)), depth + 1); // Bottom-back-left
-    children[3] = std::make_unique<Octree>(BoundingBox(glm::vec3(mid.x, bounds.min.y, mid.z), glm::vec3(bounds.max.x, mid.y, bounds.max.z)), depth + 1); // Bottom-back-right
-    children[4] = std::make_unique<Octree>(BoundingBox(glm::vec3(bounds.min.x, mid.y, bounds.min.z), glm::vec3(mid.x, bounds.max.y, mid.z)), depth + 1); // Top-front-left
-    children[5] = std::make_unique<Octree>(BoundingBox(glm::vec3(mid.x, mid.y, bounds.min.z), glm::vec3(bounds.max.x, bounds.max.y, mid.z)), depth + 1); // Top-front-right
-    children[6] = std::make_unique<Octree>(BoundingBox(glm::vec3(bounds.min.x, mid.y, mid.z), glm::vec3(mid.x, bounds.max.y, bounds.max.z)), depth + 1); // Top-back-left
-    children[7] = std::make_unique<Octree>(BoundingBox(glm::vec3(mid.x, mid.y, mid.z), bounds.max), depth + 1); // Top-back-right
-}
-*/
