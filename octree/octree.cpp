@@ -165,6 +165,7 @@ octree::Node::intersection(const std::shared_ptr<Node> &a, const std::shared_ptr
     const auto standardizedB = standardize(b);
     destination->subdivide();
     destination->nodeType = GRAY;
+    destination->isRoot = true;
     intersectionHelper(destination, standardizedA, standardizedB);
     return destination;
 }
@@ -207,6 +208,7 @@ std::shared_ptr<octree::Node> octree::Node::union_(const std::shared_ptr<Node> &
     const auto standardizedB = standardize(b);
     destination->subdivide();
     destination->nodeType = GRAY;
+    destination->isRoot = true;
     unionHelper(destination, standardizedA, standardizedB);
     return destination;
 }
@@ -278,7 +280,7 @@ std::shared_ptr<octree::Octree> octree::Octree::octreeIntersection(const std::sh
     return resultOct;
 }
 
-octree::Octree::Octree(const std::shared_ptr<Node> root) : rootNode(root) {
+octree::Octree::Octree(const std::shared_ptr<Node> root) : rootNode(std::move(root)) {
 }
 
 std::shared_ptr<octree::Octree> octree::Octree::octreeUnion(const std::shared_ptr<octree::Octree> &other) const {
