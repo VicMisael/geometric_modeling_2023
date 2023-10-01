@@ -187,16 +187,59 @@ void octree::Node::intersectionHelper(const std::shared_ptr<Node> &result, const
             } else {
                 result->children[i]->nodeType = GRAY;
                 result->children[i]->subdivide();
-                auto children=nodeA->nodeType == GRAY ? nodeA->children : nodeB->children;
-                for (int j = 0; j < 8; j++)
-                {
-                   result->children[i]->children[j] = children[j];
+                auto children = nodeA->nodeType == GRAY ? nodeA->children : nodeB->children;
+                for (int j = 0; j < 8; j++) {
+                    result->children[i]->children[j] = children[j];
                 }
             }
         } else {
             result->children[i]->subdivide();
             result->children[i]->nodeType = GRAY;
             intersectionHelper(result->children[i], a->children[i], b->children[i]);
+        }
+    }
+}
+
+std::shared_ptr<octree::Node> octree::Node::union_(const std::shared_ptr<Node> &a, const std::shared_ptr<Node> &b) {
+
+    auto destination = std::make_shared<Node>(standardBoundingBox);
+    const auto standardizedA = standardize(a);
+    const auto standardizedB = standardize(b);
+    destination->subdivide();
+    destination->nodeType = GRAY;
+    unionHelper(destination, standardizedA, standardizedB);
+    return destination;
+}
+
+void octree::Node::unionHelper(const std::shared_ptr<Node> &result, const std::shared_ptr<Node> &a,
+                               const std::shared_ptr<Node> &b) {
+
+    for (int i = 0; i < 8; i++) {
+        //Ambos folhas
+        if (a->children[i]->isLeaf && b->children[i]->isLeaf) {
+            if (a->children[i]->nodeType == BLACK || b->children[i]->nodeType == BLACK) {
+                result->children[i]->nodeType = BLACK;
+            } else {
+                result->children[i]->nodeType = WHITE;
+            }
+        } else if (a->children[i]->isLeaf ^ b->children[i]->isLeaf) {
+            //If one the nodes is leaf, copy one to the other
+            if (a->children[i]->nodeType == BLACK || b->children[i]->nodeType == BLACK) {
+                result->children[i]->nodeType = BLACK;
+            } else {
+                const auto nodeA = a->children[i];
+                const auto nodeB = b->children[i];
+                result->children[i]->nodeType = GRAY;
+                result->children[i]->subdivide();
+                auto children = nodeA->nodeType == GRAY ? nodeA->children : nodeB->children;
+                for (int j = 0; j < 8; j++) {
+                    result->children[i]->children[j] = children[j];
+                }
+            }
+        } else {
+            result->children[i]->subdivide();
+            result->children[i]->nodeType = GRAY;
+            unionHelper(result->children[i], a->children[i], b->children[i]);
         }
     }
 }
@@ -228,10 +271,15 @@ int octree::Octree::depth() {
     return rootNode->depth();
 }
 
-std::shared_ptr<octree::Octree> octree::Octree::octreeIntersection(const std::shared_ptr<octree::Octree> &other) {
+std::shared_ptr<octree::Octree> octree::Octree::octreeIntersection(const std::shared_ptr<octree::Octree> &other) const {
     std::shared_ptr<Node> Result = Node::intersection(this->rootNode, other->rootNode);
     return std::make_shared<octree::Octree>(Result);
 }
 
 octree::Octree::Octree(const std::shared_ptr<Node> root) : rootNode(root) {
+}
+
+std::shared_ptr<octree::Octree> octree::Octree::octreeUnion(const std::shared_ptr<octree::Octree> &other) const {
+    std::shared_ptr<Node> Result = Node::union_(this->rootNode, other->rootNode);
+    return std::make_shared<octree::Octree>(Result);
 }

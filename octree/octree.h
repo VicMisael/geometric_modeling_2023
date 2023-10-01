@@ -47,6 +47,8 @@ namespace octree
 
 		static std::shared_ptr<Node> intersection(const std::shared_ptr<Node>& a, const std::shared_ptr<Node>& b);
 
+        static std::shared_ptr<Node> union_(const std::shared_ptr<Node>& a, const std::shared_ptr<Node>& b);
+
 		explicit Node(BoundingBox box) : boundingBox(std::move(box))
 		{
 		};
@@ -60,6 +62,9 @@ namespace octree
 
 		static void intersectionHelper(const std::shared_ptr<Node>& result, const std::shared_ptr<Node>& a,
 		                               const std::shared_ptr<Node>& b);
+
+        static void unionHelper(const std::shared_ptr<Node>& result, const std::shared_ptr<Node>& a,
+                                       const std::shared_ptr<Node>& b);
 	};
 
 	class Octree
@@ -83,9 +88,9 @@ namespace octree
 
 		void translate(glm::vec3 point);
 
-		Octree octreeUnion(const Octree other);
+        std::shared_ptr<Octree> octreeUnion(const std::shared_ptr<octree::Octree>& other) const;
 
-		std::shared_ptr<Octree> octreeIntersection(const std::shared_ptr<octree::Octree>& other);
+		std::shared_ptr<Octree> octreeIntersection(const std::shared_ptr<octree::Octree>& other) const;
 	};
 }
 

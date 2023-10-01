@@ -19,10 +19,10 @@ static std::shared_ptr<sampler> generateSampler(const int numsamples) {
 }
 
 namespace Raytracer {
-    void render1(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
+    void render1(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h,const uint32_t samples) {
 
 
-        const auto sampler = generateSampler(25);
+        const auto sampler = generateSampler(samples);
 
 //    std::shared_ptr<VirtualObject> object = std::make_shared<Ball>(Point3(0, 0, 0), 50,
 //                                                                   std::make_shared<Phong>(ColorVec(0.5, 0.5, 0.5), 1,
@@ -52,10 +52,10 @@ namespace Raytracer {
 
     }
 
-    void render2(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
+    void render2(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h,const uint32_t samples) {
 
 
-        const auto sampler = generateSampler(16);
+        const auto sampler = generateSampler(samples);
 
         auto selectedWorld = worlds::simpleScene(object);
 
@@ -82,10 +82,10 @@ namespace Raytracer {
 
     }
 
-    void render3(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h) {
+    void render3(std::shared_ptr<VirtualObject> object, std::string filename, const uint32_t w, const uint32_t h,const uint32_t samples) {
 
 
-        const auto sampler = generateSampler(20);
+        const auto sampler = generateSampler(samples);
 
         auto selectedWorld = worlds::buildingsScene2(object);
 

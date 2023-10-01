@@ -16,6 +16,8 @@ class Sphere : public Primitive {
 public:
     explicit Sphere(float radius) : center(glm::vec3(0, 0, 0)), radius(radius) {}
 
+    explicit Sphere() : center(glm::vec3(0, 0, 0)), radius(1.0f ) {}
+
     octree::NodeType classify(BoundingBox boundingBox) const override;
 
     BoundingBox cubedBoundingBox() const override;
