@@ -284,7 +284,7 @@ octree::Octree::Octree(const std::shared_ptr<Node> root) : rootNode(root) {
 std::shared_ptr<octree::Octree> octree::Octree::octreeUnion(const std::shared_ptr<octree::Octree> &other) const {
     std::shared_ptr<Node> Result = Node::union_(this->rootNode, other->rootNode);
     auto resultOct = std::make_shared<octree::Octree>(Result);
-    resultOct->name = this->name + "∪" + other->name;
+    resultOct->name = "(" + this->name + "∪" + other->name + ")";
     return resultOct;
 }
 

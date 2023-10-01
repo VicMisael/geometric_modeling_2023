@@ -23,10 +23,6 @@ public:
         return (min + max) * 0.5f;
     }
 
-    [[nodiscard]] glm::vec3 halfDimensions() const {
-        return (max - min) * 0.5f;
-    }
-
     float volume() const;
 
     std::vector<glm::vec3> generateCubeVertices() {

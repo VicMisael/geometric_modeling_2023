@@ -9,30 +9,29 @@
 #include "Primitive.h"
 
 
-class Box : public Primitive
-{
-	glm::vec3 min_point;
-	glm::vec3 max_point;
+class Box : public Primitive {
+    glm::vec3 min_point;
+    glm::vec3 max_point;
 
-	bool isInsideBoundingBox(glm::vec3 point) const;
+    bool isInsideBoundingBox(glm::vec3 point) const;
 
 public:
-	Box(const glm::vec3 _min_point, const glm::vec3 _max_point) : min_point(_min_point), max_point(_max_point)
-	{
-	}
+    Box(const glm::vec3 _min_point, const glm::vec3 _max_point) : min_point(_min_point), max_point(_max_point) {
+    }
 
-	Box(const glm::vec3 center, float length) : min_point(center - glm::vec3(length)),
-	                                            max_point(center + glm::vec3(length))
-	{
+    Box(const glm::vec3 center, float length) : min_point(center - glm::vec3(length)),
+                                                max_point(center + glm::vec3(length)) {
 
-	};
+    };
 
-	[[nodiscard]] octree::NodeType classify(BoundingBox boundingBox) const override;
+    Box(const float x, const float y, const float z) : min_point(glm::vec3(0, 0, 0)), max_point(glm::vec3(x, y, z)){};
+
+    [[nodiscard]] octree::NodeType classify(BoundingBox boundingBox) const override;
 
 
-	[[nodiscard]] BoundingBox cubedBoundingBox() const override;
+    [[nodiscard]] BoundingBox cubedBoundingBox() const override;
 
-	void transform(glm::mat4x4 matrix) override;
+    void transform(glm::mat4x4 matrix) override;
 
     std::string name() override;;
 };
