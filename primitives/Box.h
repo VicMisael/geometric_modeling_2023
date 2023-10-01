@@ -32,7 +32,9 @@ public:
 
 	[[nodiscard]] BoundingBox cubedBoundingBox() const override;
 
-	void transform(glm::mat4x4 matrix) override;;
+	void transform(glm::mat4x4 matrix) override;
+
+    std::string name() override;;
 };
 
 

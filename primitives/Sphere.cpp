@@ -31,3 +31,7 @@ octree::NodeType Sphere::classify(BoundingBox boundingBox) const {
     return octree::WHITE;
 
 }
+
+std::string Sphere::name() {
+    return "Sphere";
+}

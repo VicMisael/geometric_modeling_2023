@@ -24,6 +24,8 @@ public:
 
     void transform(glm::mat4x4 matrix) override;
 
+    std::string name() override;
+
 };
 
 

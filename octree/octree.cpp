@@ -246,7 +246,7 @@ void octree::Node::unionHelper(const std::shared_ptr<Node> &result, const std::s
 
 
 octree::Octree::Octree(const std::shared_ptr<Primitive> &primitive, int depth) : rootNode(
-        std::make_shared<Node>(primitive->cubedBoundingBox())) {
+        std::make_shared<Node>(primitive->cubedBoundingBox())), name(primitive->name()) {
     rootNode->makeTreeInit(primitive, depth - 1);
     rootNode->isRoot = true;
 }
@@ -273,7 +273,9 @@ int octree::Octree::depth() {
 
 std::shared_ptr<octree::Octree> octree::Octree::octreeIntersection(const std::shared_ptr<octree::Octree> &other) const {
     std::shared_ptr<Node> Result = Node::intersection(this->rootNode, other->rootNode);
-    return std::make_shared<octree::Octree>(Result);
+    auto resultOct = std::make_shared<octree::Octree>(Result);
+    resultOct->name = this->name + "∩" + other->name;
+    return resultOct;
 }
 
 octree::Octree::Octree(const std::shared_ptr<Node> root) : rootNode(root) {
@@ -281,5 +283,11 @@ octree::Octree::Octree(const std::shared_ptr<Node> root) : rootNode(root) {
 
 std::shared_ptr<octree::Octree> octree::Octree::octreeUnion(const std::shared_ptr<octree::Octree> &other) const {
     std::shared_ptr<Node> Result = Node::union_(this->rootNode, other->rootNode);
-    return std::make_shared<octree::Octree>(Result);
+    auto resultOct = std::make_shared<octree::Octree>(Result);
+    resultOct->name = this->name + "∪" + other->name;
+    return resultOct;
+}
+
+std::string octree::Octree::getName() {
+    return this->name;
 }

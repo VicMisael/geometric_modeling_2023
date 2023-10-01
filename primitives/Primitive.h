@@ -8,6 +8,7 @@
 #include <tuple>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
+#include <string>
 #include "../utils/BoundingBox.h"
 
 namespace octree {
@@ -24,6 +25,8 @@ public:
     [[nodiscard]] virtual BoundingBox cubedBoundingBox() const = 0;
 
     virtual void transform(glm::mat4x4 matrix) = 0;
+
+    virtual std::string name() = 0;
 };
 
 
