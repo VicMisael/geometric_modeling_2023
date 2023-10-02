@@ -32,11 +32,11 @@ public:
     void Update(float);
     void Render();
     void Loop();
-    Game(int width, int heigth, const char* name);
+    Game(int width, int heigth, const char* name,std::shared_ptr<octree::Octree> octree);
     ~Game();
 };
 
-Game::Game(int width, int heigth, const char* name)
+Game::Game(int width, int heigth, const char* name, std::shared_ptr<octree::Octree> octree)
 {
     //abrir a janela
     //gladLoadGL();
@@ -72,7 +72,7 @@ Game::Game(int width, int heigth, const char* name)
     this->Main_shader->setMat4("projection", proj);
     this->Main_shader->setMat4("view", view);
 
-    this->state       = new EstadoUm();
+    this->state       = new EstadoUm(octree);
     this->Camera    = new GlCamera(glm::vec3(0.0f, 0.0f, 3.0f));
 }
 

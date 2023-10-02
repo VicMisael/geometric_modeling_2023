@@ -43,6 +43,8 @@ private:
                      this->meshes.push_back(mesh);
                      return;
                 }else{
+                    mesh->OnOff();
+                    this->meshes.push_back(mesh);
                     return;
                 }
             }

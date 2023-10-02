@@ -142,13 +142,13 @@ void render(std::vector<std::shared_ptr<octree::Octree>> &octrees) {
         switch (scene) {
             default:
             case 1:
-                Raytracer::render1(object, name, 1600, 1600, 10);
+                Raytracer::render1(object, name, 600, 600, 10);
                 break;
             case 2:
                 Raytracer::render2(object, name, 600, 600, 20);
                 break;
             case 3:
-                Raytracer::render3(object, name, 1600, 1600, 10);
+                Raytracer::render3(object, name, 600, 600, 10);
                 break;
         }
 
@@ -235,6 +235,7 @@ int main() {
         std::cout << "Digite 3 para fazer o parse para string de alguma octree" << std::endl;
         std::cout << "Digite 4 para informações da Octree " << std::endl;
         std::cout << "Digite 5 para transformações na octree" << std::endl;
+        std::cout << "Digite 6 para renderizar em OpenGL" << std::endl;
         std::cout << "Digite 7 para sair do modelador" << std::endl;
         int option;
         std::cin >> option;
@@ -270,8 +271,15 @@ int main() {
             }
                 break;
             case 6: {
-                Game game(1024, 768, "Game1");
-                game.Loop();
+                std::cout << "digite o id da árvore na qual deseja renderizar" << std::endl;
+                int octree = 0;
+                std::cin >> octree;
+                if (octree < octrees.size()) {
+                    const auto result = octrees[octree];
+                    Game game(1024, 768, "Game1",result );
+                    game.Loop();
+                }
+
             }
                 break;
             case 7: {

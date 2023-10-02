@@ -181,8 +181,8 @@ class Mesh
     void Render(Shader *shader, unsigned int drawM){
         glBindVertexArray(this->VAO);
         //ativa shader
-//        shader->use();
-//        shader->setMat4("model", this->transform);
+		shader->use();
+        shader->setMat4("model", this->transform);
         //RENDER
 		if (this->indicesQnt == 0)
             if(drawM == 1)

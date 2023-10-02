@@ -48,15 +48,14 @@ private:
     vector<Model*> models;
     
 public:
-    EstadoUm(){
-       auto sphere = std::make_shared<Sphere>();
-       auto octree = std::make_shared<octree::Octree>(sphere, 6);
+    EstadoUm(std::shared_ptr<octree::Octree> octree){
+       
        Model* model = new Model(octree.get());
        models.push_back(model);
     }
     
     void Render(Shader* shader){ 
-        //shader->setBool("isText", false);
+        shader->setBool("isText", false);
         for(int i = 0; i < this->models.size(); i++){
             this->models[i]->Render(shader);
         }
