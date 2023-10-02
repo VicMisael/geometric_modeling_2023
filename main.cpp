@@ -7,6 +7,7 @@
 #include "strippedRayTracer/RayTracerRedone/tracer/scene/materials/Phong.h"
 #include "strippedRayTracer/RayTracerRedone/RayTracerRedone.cpp"
 #include "rt_interface/InterceptableOctree.h"
+#include "ogl/Game.h"
 
 void printOctreeInfos(const std::vector<std::shared_ptr<octree::Octree>> &octrees) {
     std::cout << "[";
@@ -266,6 +267,11 @@ int main() {
             case 5: {
                 transformObject(octrees);
 
+            }
+                break;
+            case 6: {
+                Game game(1024, 768, "Game1");
+                game.Loop();
             }
                 break;
             case 7: {
